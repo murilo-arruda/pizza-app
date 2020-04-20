@@ -1,24 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Cart from "components/Cart";
+import PizzaBuilder from "components/PizzaBuilder";
+import PizzaState from "context/pizza/pizzaState";
+import "./App.scss";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PizzaState>
+        <h1>Pizza App</h1>
+        <main className="wrapper">
+          <PizzaBuilder />
+          <Cart />
+        </main>
+      </PizzaState>
     </div>
   );
 }
