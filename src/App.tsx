@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <PizzaState>
-        <h1>Pizza App</h1>
+        <h1>Pizzza App</h1>
         <main className="wrapper">
           <PizzaBuilder />
           <Cart />
