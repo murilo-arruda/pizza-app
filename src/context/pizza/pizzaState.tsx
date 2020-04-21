@@ -21,6 +21,9 @@ const PizzaState = ({ children }: PizzaProps) => {
       payload: { flavor, size },
     });
   };
+  const removeOrder = (index: number) => {
+    dispatch({ type: "REMOVE_ORDER", payload: index });
+  };
   return (
     <PizzaContext.Provider
       value={{
@@ -28,6 +31,7 @@ const PizzaState = ({ children }: PizzaProps) => {
         orders: state.orders,
         sizes: state.sizes,
         addOrder,
+        removeOrder,
       }}
     >
       {children}

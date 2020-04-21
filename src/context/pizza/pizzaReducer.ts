@@ -7,10 +7,9 @@ export type AppState = {
     value: number;
   }[];
 };
-type Action = {
-  type: "ADD_ORDER";
-  payload: { flavor: string; size: number };
-};
+type Action =
+  | { type: "ADD_ORDER"; payload: { flavor: string; size: number } }
+  | { type: "REMOVE_ORDER"; payload: number };
 
 export default (state: AppState, action: Action): AppState => {
   switch (action.type) {
@@ -31,6 +30,11 @@ export default (state: AppState, action: Action): AppState => {
         ...state,
         orders: computedOrder,
       };
+    case "REMOVE_ORDER":
+      const newOders = state.orders.filter((order, index) => {
+        return index !== action.payload;
+      });
+      return { ...state, orders: newOders };
     default:
       return state;
   }
