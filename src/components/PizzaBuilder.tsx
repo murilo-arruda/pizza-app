@@ -1,63 +1,75 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 import PizzaContext from "context/pizza/pizzaContext";
-
+import { Order, Flavor } from "context/types";
 const PizzaBuilder = () => {
-  const [flavor, setFlavor] = useState<string>("");
-  const [size, setSize] = useState<number>(0);
-  const [price, setPrice] = useState<number>(0);
+  const [order, setOrder] = useState<Order>({
+    flavor: "",
+    size: 0,
+    price: 0,
+  });
   const pizzaContext = useContext(PizzaContext);
-  const { flavors, sizes, addOrder } = pizzaContext;
+  const { flavors, sizes, addOrder, getMenu } = pizzaContext;
 
   useEffect(() => {
-    const computedPrice = () => {
-      return flavors.find(
-        (flavorOption: { name: string; priceFactor: number }) =>
-          flavorOption.name === flavor
-      )?.priceFactor;
-    };
-    if (flavor !== "" && size !== 0) {
-      setPrice(size * computedPrice());
+    if (!flavors) {
+      getMenu();
     }
-  }, [flavor, size, flavors]);
-  const showPizzaCreator = () => {
-    console.log("open pizza creator");
-    addOrder({ flavor, size });
-    setFlavor("");
-    setSize(0);
-    setPrice(0);
-  };
+    if (order.size !== 0 && order.flavor !== "") {
+      const { priceFactor } = flavors.find(
+        (flavor: Flavor) => flavor.name === order.flavor
+      );
+      console.log(priceFactor);
+      setOrder((o) => ({ ...o, price: order.size * priceFactor }));
+    }
+  }, [order.size, order.flavor, flavors, getMenu]);
+
   return (
     <div className="pizza-builder">
       <h2>Pizza Creator</h2>
       <span>Flavor:</span>
-      <select value={flavor} onChange={(e) => setFlavor(e.target.value)}>
-        <option disabled value="">
-          {" "}
-          -- select an option --{" "}
-        </option>
-        {flavors.map((flavor: { name: string; priceFactor: number }) => (
-          <option key={flavor.name} value={flavor.name}>
-            {flavor.name}
-          </option>
-        ))}
-      </select>
-      <span>Size:</span>
-      <select value={size} onChange={(e) => setSize(Number(e.target.value))}>
-        <option disabled value={0}>
-          {" "}
-          -- select an option --{" "}
-        </option>
-        {sizes.map((size: number) => (
-          <option key={size} value={size}>
-            {size}cm
-          </option>
-        ))}
-      </select>
-      <span>Price: U$ {price > 0 ? price : ""}</span>
-      <hr></hr>
-      <button disabled={flavor === "" || size === 0} onClick={showPizzaCreator}>
-        Add to cart
-      </button>
+      {flavors && (
+        <Fragment>
+          <select
+            value={order.flavor}
+            onChange={(e) => setOrder({ ...order, flavor: e.target.value })}
+          >
+            <option disabled value="">
+              {" "}
+              -- select an option --{" "}
+            </option>
+            {flavors.map((flavor: Flavor) => (
+              <option key={flavor.name} value={flavor.name}>
+                {flavor.name} - {flavor.description}
+              </option>
+            ))}
+          </select>
+          <span>Size:</span>
+          <select
+            value={order.size}
+            onChange={(e) =>
+              setOrder({ ...order, size: Number(e.target.value) })
+            }
+          >
+            <option disabled value={0}>
+              {" "}
+              -- select an option --{" "}
+            </option>
+            {sizes.map((size: number) => (
+              <option key={size} value={size}>
+                {size}cm
+              </option>
+            ))}
+          </select>
+          <span>Price: U$ {order.price > 0 ? order.price : ""}</span>
+          <hr></hr>
+          <button
+            disabled={order.flavor === "" || order.size === 0}
+            onClick={() => addOrder(order)}
+          >
+            Add to cart
+          </button>
+        </Fragment>
+      )}
     </div>
   );
 };

@@ -1,28 +1,25 @@
 import React, { useContext, useState, useEffect } from "react";
-import Order from "./Order";
+import OrderItem from "./OrderItem";
 import PizzaContext from "context/pizza/pizzaContext";
-
-type OrderProps = {
-  flavor: string;
-  size: number;
-  value: number;
-};
+import { Order } from "context/types";
 
 const Cart = () => {
   const [total, setTotal] = useState<number>(0);
   const pizzaContext = useContext(PizzaContext);
   const { orders } = pizzaContext;
   useEffect(() => {
-    const sumOrders = orders.reduce((acc: number, order: OrderProps) => {
-      return acc + order.value * order.size;
-    }, 0);
-    setTotal(sumOrders);
+    if (orders) {
+      const total = orders.reduce((acc: number, order: Order) => {
+        return acc + order.price;
+      }, 0);
+      setTotal(total);
+    }
   }, [orders]);
   return (
     <div>
-      {orders.length > 0 ? (
-        orders.map((order: OrderProps, i: number) => (
-          <Order key={`${i}${order.flavor}`} index={i} orderProps={order} />
+      {orders && orders.length > 0 ? (
+        orders.map((order: Order, i: number) => (
+          <OrderItem key={`${i}${order.flavor}`} index={i} order={order} />
         ))
       ) : (
         <div>your cart is empty</div>

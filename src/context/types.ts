@@ -1,3 +1,17 @@
-export const ADD_ORDER = "ADD_ORDER";
-export const REMOVE_ORDER = "REMOVE_ORDER";
-export const GET_ORDER = "GET_ORDER";
+export type Flavor = {
+  name: string;
+  priceFactor: number; //price per cm
+  description: string;
+};
+
+export type Order = {
+  flavor: string;
+  size: number;
+  price: number;
+};
+
+export type AppState = {
+  flavors?: Flavor[];
+  orders?: Order[];
+  sizes?: number[];
+};

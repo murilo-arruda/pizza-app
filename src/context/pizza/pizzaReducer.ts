@@ -1,40 +1,38 @@
-export type AppState = {
-  flavors: { name: string; priceFactor: number }[];
-  sizes: number[];
-  orders: {
-    flavor: string;
-    size: number;
-    value: number;
-  }[];
-};
+import { AppState, Order, Flavor } from "../types";
+
 type Action =
-  | { type: "ADD_ORDER"; payload: { flavor: string; size: number } }
+  | { type: "GET_MENU"; payload: { flavors: Flavor[]; sizes: number[] } }
+  | { type: "ADD_ORDER"; payload: Order }
   | { type: "REMOVE_ORDER"; payload: number };
 
 export default (state: AppState, action: Action): AppState => {
   switch (action.type) {
+    case "GET_MENU":
+      const { flavors, sizes } = action.payload;
+      return { ...state, flavors, sizes };
     case "ADD_ORDER":
-      const priceFactor = state.flavors.find(
-        (flavor) => flavor.name === action.payload.flavor
-      )?.priceFactor;
-      const computedOrder = [
-        ...state.orders,
-        {
-          flavor: action.payload.flavor,
-          size: action.payload.size,
-          value: priceFactor ? priceFactor : 1.5,
-        },
-      ];
+      if (state.orders && state.orders.length === 0) {
+        return { ...state, orders: [action.payload] };
+      }
+      if (state.orders) {
+        return { ...state, orders: [...state.orders, action.payload] };
+      }
+      // SHOULD BE AN ERROR OR SOMETHING
+      return { ...state, orders: [action.payload] };
 
-      return {
-        ...state,
-        orders: computedOrder,
-      };
     case "REMOVE_ORDER":
-      const newOders = state.orders.filter((order, index) => {
-        return index !== action.payload;
-      });
-      return { ...state, orders: newOders };
+      if (state.orders) {
+        const orders = state.orders.filter(
+          (o, index) => index !== action.payload
+        );
+
+        return {
+          ...state,
+          orders,
+        };
+      }
+      return state;
+
     default:
       return state;
   }
