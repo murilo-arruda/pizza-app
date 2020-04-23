@@ -3,25 +3,6 @@ import pizzaReducer from "./pizzaReducer";
 import PizzaContext from "./pizzaContext";
 import { Order } from "../types";
 import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-
-if (process.env.NODE_ENV === "development") {
-  const mock = new MockAdapter(axios);
-  mock.onGet("/menu").reply(200, {
-    sizes: [15, 25, 35],
-    flavors: [
-      { name: "peperoni", priceFactor: 1, description: "cheese, peperoni" },
-      {
-        name: "marguerita",
-        priceFactor: 0.9,
-        description: "cheese, marguerita",
-      },
-      { name: "mussarela", priceFactor: 0.8, description: "cheese" },
-    ],
-  });
-  // setup dev mock api
-  console.log("dev mock data");
-}
 
 type PizzaProps = { children: React.ReactNode };
 
@@ -31,7 +12,6 @@ const PizzaState = ({ children }: PizzaProps) => {
   //const getFlavors
 
   const addOrder = (order: Order) => {
-    console.log(order);
     dispatch({
       type: "ADD_ORDER",
       payload: order,
@@ -40,9 +20,13 @@ const PizzaState = ({ children }: PizzaProps) => {
   // IMPORTANTE: ADCIONAR TRY CATCH EM CASO DE ERRO NA API
   const getMenu = async () => {
     // get flavors
-    const res = await axios.get("/menu");
-    const { flavors, sizes } = res.data;
-    dispatch({ type: "GET_MENU", payload: { flavors, sizes } });
+    try {
+      const res = await axios.get("http://localhost:3004/menu");
+      const { flavors, sizes } = res.data;
+      dispatch({ type: "GET_MENU", payload: { flavors, sizes } });
+    } catch {
+      console.log("error");
+    }
     // set flavor to state
   };
   const removeOrder = (index: number) => {

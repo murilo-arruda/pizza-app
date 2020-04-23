@@ -1,11 +1,11 @@
 import { User } from "../types";
 
-type Action = { type: "GET_USER"; payload: { user: User } };
+type Action = { type: "LOGIN_USER"; payload: User };
 
 export default (state: User, action: Action): User => {
   switch (action.type) {
-    case "GET_USER":
-      return state;
+    case "LOGIN_USER":
+      return action.payload;
     default:
       return state;
   }

@@ -7,7 +7,7 @@ const Welcome = () => {
   let { path } = useRouteMatch();
   return (
     <div>
-      <h3>Wellcome to the best pizza place!</h3>
+      <h3>Welcome to the best pizza place!</h3>
       <p>Please login or register to order a very tasty pizza!</p>
 
       <Switch>

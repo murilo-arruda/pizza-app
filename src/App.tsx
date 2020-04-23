@@ -3,41 +3,37 @@ import Cart from "components/Cart";
 import PizzaBuilder from "components/PizzaBuilder";
 import PizzaState from "context/pizza/pizzaState";
 import UserState from "context/user/userState";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.scss";
 import Welcome from "components/Welcome";
+import AlertState from "context/alert/alertState";
+import Alerts from "components/Alerts";
+import RouteControl from "components/RouteControl";
 
 function App() {
-  const isAuth = false;
   return (
     <div className="App">
       <Router>
-        <UserState>
-          <PizzaState>
-            <h1>Pizzza App</h1>
-            <Switch>
-              <Route path="/">
-                <Welcome />
-              </Route>
-
-              <Route path="/pizza">
-                {isAuth ? (
+        <AlertState>
+          <UserState>
+            <PizzaState>
+              <Link to="/pizza">Pizza</Link>
+              <h1>Pizzza App</h1>
+              <Alerts />
+              <Switch>
+                <Route exact path="/">
+                  <Welcome />
+                </Route>
+                <RouteControl path="/pizza">
                   <main className="wrapper">
                     <PizzaBuilder />
                     <Cart />
                   </main>
-                ) : (
-                  <Redirect to="/" />
-                )}
-              </Route>
-            </Switch>
-          </PizzaState>
-        </UserState>
+                </RouteControl>
+              </Switch>
+            </PizzaState>
+          </UserState>
+        </AlertState>
       </Router>
     </div>
   );

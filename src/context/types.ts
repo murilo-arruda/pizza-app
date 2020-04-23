@@ -29,11 +29,19 @@ export type AppState = {
 };
 
 export type User = {
-  nickname: string; //used for login
-  name: string;
-  uid: string; //should bem unique on db
-  password: string;
-  tel: string; //regex!
-  activeOrder: boolean; //if true get from db the order
+  nickname?: string; //used for login
+  name?: string;
+  id?: string; //should bem unique on db
+  password?: string;
+  tel?: string; //regex!
+  activeOrder?: boolean; //if true get from db the order
   orders?: Order[]; //array for the pasts orders
 } | null;
+
+export type Alert = {
+  alert: string;
+  type: string;
+  timeout: number;
+  id: string;
+};
+export type Alerts = Alert[];

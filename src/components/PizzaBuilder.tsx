@@ -18,7 +18,6 @@ const PizzaBuilder = () => {
       const { priceFactor } = flavors.find(
         (flavor: Flavor) => flavor.name === order.flavor
       );
-      console.log(priceFactor);
       setOrder((o) => ({ ...o, price: order.size * priceFactor }));
     }
   }, [order.size, order.flavor, flavors, getMenu]);
