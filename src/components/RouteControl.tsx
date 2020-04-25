@@ -19,7 +19,7 @@ const RouteControl = ({
         return user ? (
           children
         ) : (
-          <Redirect to={{ pathname: "/", state: { from: location } }} />
+          <Redirect to={{ pathname: "/login", state: { from: location } }} />
         );
       }}
     />

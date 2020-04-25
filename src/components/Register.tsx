@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "context/user/userContext";
 import { User } from "context/types";
+
 const Register = () => {
   const userContext = useContext(UserContext);
   const [user, setUser] = useState<User>({
@@ -76,7 +77,7 @@ const Register = () => {
         <button>Register!</button>
       </form>
       <p>
-        Already have an account? <Link to="/">click here to login!</Link>
+        Already have an account? <Link to="/login">click here to login!</Link>
       </p>
     </div>
   );

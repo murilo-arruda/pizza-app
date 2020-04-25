@@ -1,23 +1,17 @@
-import React from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
-import Register from "./Register";
-import Login from "./Login";
-
+import React, { useContext } from "react";
+import { Redirect } from "react-router-dom";
+import UserContext from "context/user/userContext";
 const Welcome = () => {
-  let { path } = useRouteMatch();
+  const { user } = useContext(UserContext);
+  if (user) {
+    return <div>Hello,{user[0].name}!</div>;
+  }
   return (
     <div>
       <h3>Welcome to the best pizza place!</h3>
-      <p>Please login or register to order a very tasty pizza!</p>
 
-      <Switch>
-        <Route exact path={path}>
-          <Login />
-        </Route>
-        <Route path={`${path}register`}>
-          <Register />
-        </Route>
-      </Switch>
+      <p>Please login or register to order a very tasty pizza!</p>
+      <Redirect to="/login" />
     </div>
   );
 };

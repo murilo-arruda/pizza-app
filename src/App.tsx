@@ -9,6 +9,8 @@ import Welcome from "components/Welcome";
 import AlertState from "context/alert/alertState";
 import Alerts from "components/Alerts";
 import RouteControl from "components/RouteControl";
+import Register from "components/Register";
+import Login from "components/Login";
 
 function App() {
   return (
@@ -19,10 +21,14 @@ function App() {
             <PizzaState>
               <Link to="/pizza">Pizza</Link>
               <h1>Pizzza App</h1>
+              <Welcome />
               <Alerts />
               <Switch>
-                <Route exact path="/">
-                  <Welcome />
+                <Route path="/login">
+                  <Login />
+                </Route>
+                <Route path="/register">
+                  <Register />
                 </Route>
                 <RouteControl path="/pizza">
                   <main className="wrapper">
