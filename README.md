@@ -1,9 +1,24 @@
 ## Pizza App
 
-Pizza Delivery prototype
+Pizza Delivery prototype.
 
-Objective: Create a modern and fast way to order pizza using React.
+Minimalist Pizza/Food site making the order process much faster.
 
-Minimalist Pizza site making the order process much faster.
+In future this will be a boilerplate for other sites.
 
-More information soon
+### Stack
+
+- React: Interface and state management.
+- React-router: Routes for navigation.
+- Sass: CSS pre-processor.
+- Firebase: Authentication and database.
+- Typescript: Code quality and safety.
+
+### Next steps
+
+This project is in development.
+
+- [ ] Integrate with Firestore (Firebase)
+- [ ] Use firebase Auth
+- [ ] Make app responsive for mobile
+- [ ] Work on app Design
