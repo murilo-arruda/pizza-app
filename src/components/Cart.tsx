@@ -15,6 +15,11 @@ const Cart = () => {
       setTotal(total);
     }
   }, [orders]);
+  const handleSubmit = () => {
+    //makeOrder()
+    //send order to db!
+    //redirect to Waiting room!
+  };
   return (
     <div>
       {orders && orders.length > 0 ? (
@@ -25,6 +30,9 @@ const Cart = () => {
         <div>your cart is empty</div>
       )}
       <span>Total: {total}</span>
+      <button disabled={!(orders && orders.length > 0)} onClick={handleSubmit}>
+        Confirm order
+      </button>
     </div>
   );
 };

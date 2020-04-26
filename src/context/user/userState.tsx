@@ -1,68 +1,62 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer, useEffect } from "react";
 import userReducer from "./userReducer";
 import UserContext from "./userContext";
-import axios from "axios";
-import { User } from "../types";
-import AlertContext from "context/alert/alertContext";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
-type UserProps = { children: React.ReactNode };
-if (process.env.NODE_ENV === "development") {
-  //user
-}
+const config = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+};
+
+firebase.initializeApp(config);
+type AuthUser = firebase.auth.UserCredential | null;
+type UserProps = {
+  children: React.ReactNode;
+};
+
+const auth = firebase.auth();
 
 const UserState = ({ children }: UserProps) => {
   const [state, dispatch] = useReducer(userReducer, null);
-  const alertContext = useContext(AlertContext);
-  const { addAlert } = alertContext;
-  const registerUser = async (user: User) => {
-    // TO-DO: VERIFICAR SE TODOS OS DADOS ATENDEM OS REQUISITOS
 
+  const signIn = async (email: "string", password: "string") => {
     try {
-      // TODO: send user to do db.json !!!
-      const uid =
-        Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
-
-      const result = await axios.post("http://localhost:3004/users", {
-        ...user,
-        id: uid,
-      });
-      addAlert({
-        alert: "user successfuly registered!",
-        type: "success",
-        timeout: 2000,
-      });
-
-      console.log("add user success, should dispatch an action", result.data);
-    } catch {
-      // if fail dispatch error
-      console.log("error while adding user");
+      const res = await auth.signInWithEmailAndPassword(email, password);
+      dispatch({ type: "SET_USER", payload: res });
+      console.log("signin", res);
+    } catch (e) {
+      console.log("error", e);
     }
   };
-  const login = async ({
-    password,
-    nickname,
-  }: {
-    password: string;
-    nickname: string;
-  }) => {
-    //call api to check if user exists
+  const signOut = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3004/users?nickname=${nickname}&password=${password}`
-      );
-      if (res.data.length > 0) {
-        dispatch({ type: "LOGIN_USER", payload: res.data });
-      } else {
-        addAlert({ alert: "user not found!", type: "danger", timeout: 2000 });
-      }
-    } catch {}
+      await auth.signOut();
+      dispatch({ type: "REMOVE_USER" });
+    } catch (e) {
+      console.log("error while singout", e);
+    }
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      console.log("user:", authUser);
+      authUser
+        ? dispatch({ type: "SET_USER", payload: authUser })
+        : dispatch({ type: "REMOVE_USER" });
+    });
+  }, []);
   return (
     <UserContext.Provider
       value={{
-        registerUser,
-        login,
+        signIn,
+        signOut,
         user: state,
       }}
     >

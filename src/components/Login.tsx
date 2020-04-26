@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import UserContext from "context/user/userContext";
-
 type User = {
   nickname: string;
   password: string;
@@ -11,18 +10,20 @@ const Login = () => {
   const userContext = useContext(UserContext);
   const [userLogin, setUser] = useState<User>({ nickname: "", password: "" });
 
-  const { user, login } = userContext;
+  const { user, signIn } = userContext;
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    login(userLogin);
+    signIn(userLogin.nickname, userLogin.password);
   };
   const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
     const { value, name } = event.currentTarget;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
+
   if (user) {
-    return <Redirect to={{ pathname: "/pizza" }} />;
+    return <Redirect to="/pizza" />;
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit} className="form">

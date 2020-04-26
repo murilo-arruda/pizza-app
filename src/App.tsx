@@ -1,16 +1,17 @@
 import React from "react";
 import Cart from "components/Cart";
+import Navbar from "components/Navbar";
 import PizzaBuilder from "components/PizzaBuilder";
-import PizzaState from "context/pizza/pizzaState";
-import UserState from "context/user/userState";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./App.scss";
+import Login from "components/Login";
 import Welcome from "components/Welcome";
+import PizzaState from "context/pizza/pizzaState";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AlertState from "context/alert/alertState";
 import Alerts from "components/Alerts";
 import RouteControl from "components/RouteControl";
 import Register from "components/Register";
-import Login from "components/Login";
+import UserState from "context/user/userState";
+import "./App.scss";
 
 function App() {
   return (
@@ -19,8 +20,7 @@ function App() {
         <AlertState>
           <UserState>
             <PizzaState>
-              <Link to="/pizza">Pizza</Link>
-              <h1>Pizzza App</h1>
+              <Navbar />
               <Welcome />
               <Alerts />
               <Switch>

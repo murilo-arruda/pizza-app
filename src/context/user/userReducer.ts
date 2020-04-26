@@ -1,11 +1,18 @@
-import { User } from "../types";
+type Action =
+  | { type: "SET_USER"; payload: FirebaseUserOptions }
+  | { type: "REMOVE_USER" };
 
-type Action = { type: "LOGIN_USER"; payload: User };
+type FirebaseUserOptions = firebase.auth.UserCredential | firebase.User;
 
-export default (state: User, action: Action): User => {
+export default (
+  state: FirebaseUserOptions | null,
+  action: Action
+): FirebaseUserOptions | null => {
   switch (action.type) {
-    case "LOGIN_USER":
+    case "SET_USER":
       return action.payload;
+    case "REMOVE_USER":
+      return null;
     default:
       return state;
   }
