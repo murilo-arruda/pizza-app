@@ -3,9 +3,11 @@ import UserContext from "context/user/userContext";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  // Remover admin
   const { user, signOut } = useContext(UserContext);
   return (
     <nav>
+      <Link to="/admin">Admin</Link>
       Pizza Time!
       {user ? <AuthNav /> : <NonAuthNav />}
       {user && <button onClick={signOut}>Logout</button>}

@@ -11,6 +11,7 @@ import Alerts from "components/Alerts";
 import RouteControl from "components/RouteControl";
 import Register from "components/Register";
 import UserState from "context/user/userState";
+import AdminArea from "components/AdminRoutes/AdminArea";
 import "./App.scss";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
               <Welcome />
               <Alerts />
               <Switch>
+                <Route path="/admin">
+                  <AdminArea />
+                </Route>
                 <Route path="/login">
                   <Login />
                 </Route>
