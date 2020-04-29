@@ -1,7 +1,9 @@
 export type Flavor = {
+  type: string;
   name: string;
-  priceFactor: number; //price per cm
+  priceFactor: number;
   description: string;
+  isAvailable: boolean;
 };
 
 export type Order = {
@@ -12,8 +14,17 @@ export type Order = {
 
 export type Extra = {
   name: string;
+  description?: string;
   price: string;
-  available: number; // # of avaible on store. if 0 should show nothing
+  available: number;
+};
+
+export type Item = {
+  type: string;
+  name: string;
+  description?: string;
+  price: number;
+  available: number;
 };
 export type ExtraOrder = {
   name: string;
@@ -28,16 +39,6 @@ export type AppState = {
   extraOrder?: ExtraOrder[];
 };
 
-export type User = {
-  nickname?: string; //used for login
-  name?: string;
-  id?: string; //should bem unique on db
-  password?: string;
-  tel?: string; //regex!
-  activeOrder?: boolean; //if true get from db the order
-  orders?: Order[]; //array for the pasts orders
-} | null;
-
 export type Alert = {
   alert: string;
   type: string;
@@ -45,3 +46,5 @@ export type Alert = {
   id: string;
 };
 export type Alerts = Alert[];
+
+export type Stock = Item[] | null;
