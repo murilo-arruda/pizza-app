@@ -25,3 +25,5 @@ yarn-error.log*
 notes.md
 db.json
 .env
+.Dockerfile
+.prod.Dockerfile
