@@ -1,8 +1,12 @@
-type Action =
-  | { type: "SET_USER"; payload: FirebaseUserOptions }
-  | { type: "REMOVE_USER" };
+type FirebaseUser = firebase.auth.UserCredential | firebase.User | null;
 
-type FirebaseUserOptions = firebase.auth.UserCredential | firebase.User;
+type FirebaseUserOptions = {
+  user: FirebaseUser;
+  db?: firebase.firestore.Firestore;
+};
+type Action =
+  | { type: "SET_USER"; payload: FirebaseUser }
+  | { type: "REMOVE_USER" };
 
 export default (
   state: FirebaseUserOptions | null,
@@ -10,9 +14,9 @@ export default (
 ): FirebaseUserOptions | null => {
   switch (action.type) {
     case "SET_USER":
-      return action.payload;
+      return { ...state, user: action.payload };
     case "REMOVE_USER":
-      return null;
+      return { ...state, user: null };
     default:
       return state;
   }

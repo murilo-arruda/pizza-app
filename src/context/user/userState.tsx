@@ -16,15 +16,20 @@ const config = {
 };
 
 firebase.initializeApp(config);
-type AuthUser = firebase.auth.UserCredential | null;
+// type AuthUser = firebase.auth.UserCredential | null;
 type UserProps = {
   children: React.ReactNode;
 };
-
+// try catch
+// TESTAR THROTLE DE INTERNET
 const auth = firebase.auth();
+const db = firebase.firestore();
 
 const UserState = ({ children }: UserProps) => {
-  const [state, dispatch] = useReducer(userReducer, null);
+  const [state, dispatch] = useReducer(userReducer, {
+    user: null,
+    db: db,
+  });
 
   const signIn = async (email: "string", password: "string") => {
     try {
@@ -52,12 +57,14 @@ const UserState = ({ children }: UserProps) => {
         : dispatch({ type: "REMOVE_USER" });
     });
   }, []);
+  console.log("rerender", state);
   return (
     <UserContext.Provider
       value={{
         signIn,
         signOut,
-        user: state,
+        db: state?.db,
+        user: state?.user,
       }}
     >
       {children}

@@ -1,9 +1,11 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import adminReducer from "./adminReducer";
 import AdminContext from "./adminContext";
-
+import { Item } from "context/types";
+import UserContext from "context/user/userContext";
 const fakeStock = [
   {
+    id: 1,
     type: "flavor",
     name: "bacon",
     price: 1,
@@ -11,6 +13,7 @@ const fakeStock = [
     available: 10,
   },
   {
+    id: 2,
     type: "drink",
     name: "coca",
     price: 5,
@@ -18,21 +21,40 @@ const fakeStock = [
     available: 50,
   },
 ];
+const initialState = {
+  current: null,
+  stock: fakeStock,
+};
 
 const AdminState = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(adminReducer, null);
+  const [state, dispatch] = useReducer(adminReducer, initialState);
+  const { db } = useContext(UserContext);
 
-  const getStock = async () => {
-    // Get the current stock from db
-    const stock = fakeStock;
-    dispatch({ type: "SET_STOCK", payload: stock });
+  const getItems = async () => {
+    try {
+    } catch (e) {}
   };
-
+  const addItemToStock = async (item: Item) => {
+    dispatch({ type: "ADD_ITEM", payload: item });
+  };
+  const editItemFromStock = async (item: Item) => {
+    dispatch({ type: "EDIT_ITEM", payload: item });
+  };
+  const removeItemFromStock = async (itemName: string) => {
+    dispatch({ type: "REMOVE_ITEM", payload: itemName });
+  };
+  const setCurrent = (itemId: string | number) => {
+    dispatch({ type: "SET_CURRENT", payload: itemId });
+  };
   return (
     <AdminContext.Provider
       value={{
-        getStock,
-        stock: state,
+        removeItemFromStock,
+        addItemToStock,
+        editItemFromStock,
+        setCurrent,
+        stock: state!.stock,
+        current: state!.current,
       }}
     >
       {children}

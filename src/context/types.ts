@@ -20,6 +20,7 @@ export type Extra = {
 };
 
 export type Item = {
+  id: string | number;
   type: string;
   name: string;
   description?: string;
@@ -48,3 +49,8 @@ export type Alert = {
 export type Alerts = Alert[];
 
 export type Stock = Item[] | null;
+
+export type Admin = {
+  stock: Item[];
+  current?: Item | null;
+} | null;
