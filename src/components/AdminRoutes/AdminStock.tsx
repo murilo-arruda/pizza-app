@@ -1,4 +1,6 @@
 import React from "react";
+import Stock from "./Stock";
+import ItemForm from "./ItemForm";
 
 const AdminStock = () => {
   // estrutura: duas colunas:
@@ -6,8 +8,8 @@ const AdminStock = () => {
   // Formulario para adcionar ao estoque
   return (
     <main className="wrapper">
-      <div>ESTOQUE ATUAL</div>
-      <div>ADCIONAR</div>
+      <Stock />
+      <ItemForm />
     </main>
   );
 };
