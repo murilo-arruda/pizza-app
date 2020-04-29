@@ -1,18 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "context/user/userContext";
-import { User } from "context/types";
 
 const Register = () => {
   const userContext = useContext(UserContext);
-  const [user, setUser] = useState<User>({
-    nickname: "",
-    name: "",
-    password: "",
-    tel: "",
-    activeOrder: false,
-    orders: [],
-  });
+  const [user, setUser] = useState(null);
   const { registerUser } = userContext;
 
   const handleSubmit = (event: React.SyntheticEvent) => {
@@ -20,20 +12,15 @@ const Register = () => {
     //Check if user is valid
 
     //register
-    registerUser(user);
+    console.log("register cb needed");
   };
   const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    setUser((prevState) => {
-      if (prevState) {
-        return { ...prevState, [name]: value };
-      }
-      return prevState;
-    });
+    return null;
   };
+
   return (
     <div>
-      <form className="form" onSubmit={handleSubmit}>
+      {/* <form className="form" onSubmit={handleSubmit}>
         <label htmlFor="full name">
           full name:
           <input
@@ -78,7 +65,7 @@ const Register = () => {
       </form>
       <p>
         Already have an account? <Link to="/login">click here to login!</Link>
-      </p>
+  </p> */}
     </div>
   );
 };
