@@ -19,9 +19,7 @@ export default (state: Admin | null, action: Action): Admin | null => {
       }
     case "REMOVE_ITEM":
       if (state?.stock && state.stock.length > 0) {
-        const stock = state.stock.filter(
-          (item) => item?.name !== action.payload
-        );
+        const stock = state.stock.filter((item) => item?.id !== action.payload);
         return { ...state, stock };
       } else {
         return state;

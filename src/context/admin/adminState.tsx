@@ -21,29 +21,55 @@ const fakeStock = [
     available: 50,
   },
 ];
-const initialState = {
-  current: null,
-  stock: fakeStock,
-};
 
 const AdminState = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(adminReducer, initialState);
-  const { db } = useContext(UserContext);
+  const [state, dispatch] = useReducer(adminReducer, null);
+  const { db }: { db: firebase.firestore.Firestore } = useContext(UserContext);
 
   const getItems = async () => {
     try {
-    } catch (e) {}
+      const querySnapshot = await db.collection("stock").get();
+      let stock: Item[] = [];
+      querySnapshot.forEach((doc: firebase.firestore.DocumentData) => {
+        const { available, description, name, price, type } = doc.data();
+        const id = doc.id;
+        stock.push({ available, description, name, price, type, id });
+      });
+
+      dispatch({ type: "SET_STOCK", payload: stock });
+    } catch (e) {
+      console.log("error", e);
+    }
   };
+
   const addItemToStock = async (item: Item) => {
-    dispatch({ type: "ADD_ITEM", payload: item });
+    try {
+      const docRef = await db.collection("stock").add(item);
+      console.log("item added, id:", docRef.id);
+      dispatch({ type: "ADD_ITEM", payload: { ...item, id: docRef.id } });
+    } catch (e) {
+      console.log("error adding item", e);
+    }
   };
   const editItemFromStock = async (item: Item) => {
-    dispatch({ type: "EDIT_ITEM", payload: item });
+    try {
+      db.collection("stock").doc(item.id).set(item);
+      console.log("item editado");
+      dispatch({ type: "EDIT_ITEM", payload: item });
+    } catch (e) {
+      console.log("error ao editar item", e);
+    }
   };
-  const removeItemFromStock = async (itemName: string) => {
-    dispatch({ type: "REMOVE_ITEM", payload: itemName });
+  const removeItemFromStock = async (id: string) => {
+    try {
+      db.collection("stock").doc(id).delete();
+      console.log("deletado");
+      dispatch({ type: "REMOVE_ITEM", payload: id });
+    } catch (e) {
+      console.log("error ao deletar", e);
+    }
   };
-  const setCurrent = (itemId: string | number) => {
+  const setCurrent = (itemId: string) => {
     dispatch({ type: "SET_CURRENT", payload: itemId });
   };
   return (
@@ -53,8 +79,9 @@ const AdminState = ({ children }: { children: React.ReactNode }) => {
         addItemToStock,
         editItemFromStock,
         setCurrent,
-        stock: state!.stock,
-        current: state!.current,
+        getItems,
+        stock: state?.stock,
+        current: state?.current,
       }}
     >
       {children}

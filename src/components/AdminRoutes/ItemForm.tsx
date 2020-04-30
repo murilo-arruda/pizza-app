@@ -10,7 +10,7 @@ const ItemForm = () => {
   );
   const [item, setItem] = useState<Item>({
     id: "",
-    type: "",
+    type: "others",
     name: "",
     description: "",
     price: 1,
@@ -18,7 +18,7 @@ const ItemForm = () => {
   });
 
   useEffect(() => {
-    if (current !== null) {
+    if (current !== null && current !== undefined) {
       console.log("dif");
       setItem(current);
     }
@@ -34,7 +34,7 @@ const ItemForm = () => {
     }
     setItem({
       id: "",
-      type: "",
+      type: "others",
       name: "",
       description: "",
       price: 1,
@@ -50,6 +50,7 @@ const ItemForm = () => {
       return { ...prevProp, [name]: value };
     });
   };
+
   return (
     <div>
       <h3>Item Form</h3>

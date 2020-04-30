@@ -20,7 +20,7 @@ export type Extra = {
 };
 
 export type Item = {
-  id: string | number;
+  id: string;
   type: string;
   name: string;
   description?: string;
