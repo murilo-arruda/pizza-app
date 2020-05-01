@@ -18,7 +18,8 @@ In future this will be a boilerplate for other sites.
 
 This project is in development.
 
-- [ ] Integrate with Firestore (Firebase)
-- [ ] Use firebase Auth
+- [x] Integrate with Firestore (Firebase)
+- [x] Use firebase Auth
+- [ ] Finish App logic
 - [ ] Make app responsive for mobile
 - [ ] Work on app Design
