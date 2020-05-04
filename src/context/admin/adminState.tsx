@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import adminReducer from "./adminReducer";
 import AdminContext from "./adminContext";
 import { Item } from "context/types";
@@ -22,25 +22,31 @@ const fakeStock = [
   },
 ];
 
+//TODO: Add observe for menu changes.
+//TODO: Fix duplicate state. Menu exists in admin and pizzaState.
+
 const AdminState = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(adminReducer, null);
   const { db }: { db: firebase.firestore.Firestore } = useContext(UserContext);
 
-  const getItems = async () => {
-    try {
-      const querySnapshot = await db.collection("stock").get();
-      let stock: Item[] = [];
-      querySnapshot.forEach((doc: firebase.firestore.DocumentData) => {
-        const { available, description, name, price, type } = doc.data();
-        const id = doc.id;
-        stock.push({ available, description, name, price, type, id });
-      });
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const querySnapshot = await db.collection("stock").get();
+        let stock: Item[] = [];
+        querySnapshot.forEach((doc: firebase.firestore.DocumentData) => {
+          const { available, description, name, price, type } = doc.data();
+          const id = doc.id;
+          stock.push({ available, description, name, price, type, id });
+        });
 
-      dispatch({ type: "SET_STOCK", payload: stock });
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
+        dispatch({ type: "SET_STOCK", payload: stock });
+      } catch (e) {
+        console.log("error", e);
+      }
+    };
+    getItems();
+  }, []);
 
   const addItemToStock = async (item: Item) => {
     try {
@@ -79,7 +85,7 @@ const AdminState = ({ children }: { children: React.ReactNode }) => {
         addItemToStock,
         editItemFromStock,
         setCurrent,
-        getItems,
+
         stock: state?.stock,
         current: state?.current,
       }}

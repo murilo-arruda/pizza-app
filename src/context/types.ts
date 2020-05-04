@@ -7,9 +7,8 @@ export type Flavor = {
 };
 
 export type Order = {
-  flavor: string;
-  size: number;
-  price: number;
+  id: string;
+  quantity: number;
 };
 
 export type Extra = {
@@ -27,17 +26,10 @@ export type Item = {
   price: number;
   available: number;
 };
-export type ExtraOrder = {
-  name: string;
-  price: number;
-  quantity: number;
-};
+
 export type AppState = {
-  flavors?: Flavor[];
-  sizes?: number[];
-  extras?: Extra[];
-  orders?: Order[];
-  extraOrder?: ExtraOrder[];
+  stock: Item[];
+  orders: Order[];
 };
 
 export type Alert = {

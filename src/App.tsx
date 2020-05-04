@@ -1,7 +1,7 @@
 import React from "react";
 import Cart from "components/Cart";
 import Navbar from "components/Navbar";
-import PizzaBuilder from "components/PizzaBuilder";
+import OrderBuilder from "components/OrderBuilder";
 import Login from "components/Login";
 import Welcome from "components/Welcome";
 import PizzaState from "context/pizza/pizzaState";
@@ -39,7 +39,7 @@ function App() {
                 </Route>
                 <RouteControl path="/pizza">
                   <main className="wrapper">
-                    <PizzaBuilder />
+                    <OrderBuilder />
                     <Cart />
                   </main>
                 </RouteControl>

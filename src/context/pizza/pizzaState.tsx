@@ -1,37 +1,57 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
+import UserContext from "../user/userContext";
 import pizzaReducer from "./pizzaReducer";
 import PizzaContext from "./pizzaContext";
-import { Order } from "../types";
+import { Order, Item } from "../types";
 
 type PizzaProps = {
   children: React.ReactNode;
 };
 
 const PizzaState = ({ children }: PizzaProps) => {
-  const [state, dispatch] = useReducer(pizzaReducer, {});
+  const [state, dispatch] = useReducer(pizzaReducer, { orders: [], stock: [] });
+  const { db }: { db: firebase.firestore.Firestore } = useContext(UserContext);
 
-  const addOrder = (order: Order) => {
+  const addOrder = (id: string) => {
     dispatch({
       type: "ADD_ORDER",
-      payload: order,
+      payload: id,
     });
   };
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const querySnapshot = await db.collection("stock").get();
+        let stock: Item[] = [];
+        querySnapshot.forEach((doc: firebase.firestore.DocumentData) => {
+          const { available, description, name, price, type } = doc.data();
+          const id = doc.id;
+          stock.push({ available, description, name, price, type, id });
+        });
 
-  const getMenu = async () => {};
+        dispatch({ type: "SET_STOCK", payload: stock });
+      } catch (e) {
+        console.log("error", e);
+      }
+    };
+    getItems();
+  }, []);
 
-  const removeOrder = (index: number) => {
-    dispatch({ type: "REMOVE_ORDER", payload: index });
+  const removeOrder = (id: string) => {
+    dispatch({ type: "REMOVE_ORDER", payload: id });
+  };
+  const removeOrderOne = (id: string) => {
+    dispatch({ type: "REMOVE_ONE_ORDER", payload: id });
   };
 
   return (
     <PizzaContext.Provider
       value={{
-        flavors: state.flavors,
+        menu: state.stock,
         orders: state.orders,
-        sizes: state.sizes,
         addOrder,
-        getMenu,
         removeOrder,
+        removeOrderOne,
       }}
     >
       {children}

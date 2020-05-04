@@ -3,17 +3,10 @@ import AdminContext from "context/admin/adminContext";
 import { Item } from "context/types";
 const Stock = () => {
   const adminContext = useContext(AdminContext);
-  const { stock, removeItemFromStock, setCurrent, getItems } = adminContext;
-
-  useEffect(() => {
-    if (!stock) {
-      getItems();
-    }
-  }, []);
+  const { stock, removeItemFromStock, setCurrent } = adminContext;
 
   return (
     <div>
-      <button onClick={getItems}>Refresh</button>
       {stock &&
         stock.map((item: Item) => (
           <div key={item.id}>
