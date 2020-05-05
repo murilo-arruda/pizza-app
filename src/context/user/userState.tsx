@@ -4,7 +4,7 @@ import UserContext from "./userContext";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-
+import { Order } from "../types";
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -29,6 +29,7 @@ const UserState = ({ children }: UserProps) => {
   const [state, dispatch] = useReducer(userReducer, {
     user: null,
     db: db,
+    orders: [],
   });
 
   const signIn = async (email: "string", password: "string") => {
@@ -49,6 +50,17 @@ const UserState = ({ children }: UserProps) => {
     }
   };
 
+  const makeOrder = async (order: Order[]) => {
+    // Send order to db. admin must confirm.
+    try {
+      const docRef = await db.collection("orders").add({ order: order });
+      console.log("result order", docRef.id);
+      dispatch({ type: "ADD_ORDER", payload: docRef.id });
+    } catch (e) {
+      console.log("error while sending order", e);
+    }
+  };
+
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       console.log("user:", authUser);
@@ -63,6 +75,7 @@ const UserState = ({ children }: UserProps) => {
       value={{
         signIn,
         signOut,
+        makeOrder,
         db: state?.db,
         user: state?.user,
       }}

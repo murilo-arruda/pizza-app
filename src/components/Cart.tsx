@@ -1,15 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
-import OrderItem from "./OrderItem";
+import UserContext from "context/user/userContext";
 import PizzaContext from "context/pizza/pizzaContext";
 import { Order } from "context/types";
+
+// TODO: Create modal to payment.
+// TODO: Show total value of order
+// TODO: Make each item an component
 
 const Cart = () => {
   const [total, setTotal] = useState<number>(0);
   const pizzaContext = useContext(PizzaContext);
+  const { makeOrder } = useContext(UserContext);
+
   const { orders, removeOrder, removeOrderOne } = pizzaContext;
   useEffect(() => {}, []);
   const handleSubmit = () => {
+    console.log("order api");
     //makeOrder()
+    makeOrder(orders);
     //send order to db!
     //redirect to Waiting room!
   };
@@ -24,6 +32,7 @@ const Cart = () => {
             <button onClick={() => removeOrder(order.id)}>Remove All</button>
           </div>
         ))}
+      {orders.length > 0 && <button onClick={handleSubmit}>Order!</button>}
     </div>
   );
 };
