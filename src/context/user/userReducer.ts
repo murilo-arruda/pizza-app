@@ -1,4 +1,4 @@
-type FirebaseUser = firebase.auth.UserCredential | firebase.User | null;
+type FirebaseUser = firebase.User | null;
 
 type FirebaseUserOptions = {
   user: FirebaseUser;

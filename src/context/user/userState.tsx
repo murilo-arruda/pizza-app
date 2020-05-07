@@ -35,8 +35,12 @@ const UserState = ({ children }: UserProps) => {
   const signIn = async (email: "string", password: "string") => {
     try {
       const res = await auth.signInWithEmailAndPassword(email, password);
-      dispatch({ type: "SET_USER", payload: res });
-      console.log("signin", res);
+      dispatch({ type: "SET_USER", payload: res.user });
+      if (res.user) {
+        console.log("signin", res.user.uid);
+      } else {
+        console.log("something wrong");
+      }
     } catch (e) {
       console.log("error", e);
     }
@@ -52,18 +56,29 @@ const UserState = ({ children }: UserProps) => {
 
   const makeOrder = async (order: Order[]) => {
     // Send order to db. admin must confirm.
-    try {
-      const docRef = await db.collection("orders").add({ order: order });
-      console.log("result order", docRef.id);
-      dispatch({ type: "ADD_ORDER", payload: docRef.id });
-    } catch (e) {
-      console.log("error while sending order", e);
+    if (state.user) {
+      try {
+        const docRef = await db
+          .collection("orders")
+          .add({ order: order, uid: state.user.uid, status: true });
+        console.log("Order id: ", docRef.id);
+        dispatch({ type: "ADD_ORDER", payload: docRef.id });
+      } catch (e) {
+        console.log("error while sending order", e);
+      }
+    } else {
+      console.log("alert login");
     }
   };
 
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
-      console.log("user:", authUser);
+      if (authUser) {
+        console.log("user:", authUser.uid);
+      } else {
+        console.log("no user");
+      }
+
       authUser
         ? dispatch({ type: "SET_USER", payload: authUser })
         : dispatch({ type: "REMOVE_USER" });
