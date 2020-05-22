@@ -1,37 +1,26 @@
-## Pizza App
+## Delivery App
 
-Pizza Delivery prototype.
+Home delivery app prototype.
 
-Minimalist Pizza/Food site making the order process much faster.
+Minimalist delivery app site making the order process much faster and simple.
 
-Using React and google Firebase.
+Using React and Google Firebase.
 
-In future this will be a boilerplate for other sites.
 
-### Stack
+## Big app Refactor
+
+This app name will be changed for "Delivery App"
+
+The app will get a big refactor on the logic/state. Instead of handle only pizza store templates will handle any type of online delivery store (foods, drinks, cloths, games...).
+
+
+### Stack (desired)
 
 - React: Interface and state management.
 - React-router: Routes for navigation.
-- Sass: CSS pre-processor.
+- Styled-Components:
 - Firebase: Authentication and database.
 - Typescript: Code quality and safety.
 
-### Next steps
 
-This project is in development.
 
-Core functionality:
-
-- [x] Integrate with Firestore (Firebase)
-- [x] Use firebase Auth
-- [ ] Finish App logic
-  - [ ] Admin Panel
-  - [ ] Order confirmation
-  - [ ] Register Form
-  - [ ] Routes Auth
-
-Final touch:
-
-- [ ] Work on CSS Layout
-- [ ] Make app responsive for mobile
-- [ ] Create a good color palette
